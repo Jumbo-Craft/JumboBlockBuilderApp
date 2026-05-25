@@ -1,116 +1,51 @@
 # This is a sample Python script.
 import json
 import numpy as np
+import tkinter as tk
 
 import nbtlib
 from nbtlib import Compound, List, String, Int
 
+from converter import Converter
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-begin_arr = [
-    [0, 0, 15], [15, 15, 15], [0, 15, 0], [0, 15, 0], [15, 15, 0], [0, 15, 15]
-]
-d_arr = [
-    [0, 0, -1], [0, -1, 0], [0, -1, 0], [0, 0, 1], [0, -1, 0], [0, -1, 0]
-]
-shift_arr = [
-    [1, 0, 15], [0, 15, -1], [0, 15, 1], [1, 0, -15], [-1, 15, 0], [1, 15, 0]
-]
 
 def main():
-    #mk_sample_model()
     #mk_jumbo_model('oak_log',
     #               ['oak_log_top', 'oak_log', 'oak_log', 'oak_log_top', 'oak_log', 'oak_log'],
     #               [0, 1, 2, 3, 4, 5])
-    model2nbt('oak_log')
+    root = tk.Tk()
+    root.title(u"Software Title")
+    root.geometry("800x600")
 
-def model2nbt(model_name: str, fill: bool = True):
-    nbt = nbtlib.File({
-        'size': List[Int]([Int(16), Int(16), Int(16)]),
-        'palette': List[Compound]([]),
-        'blocks': List[Compound]([]),
-        'entities': List[Compound]([]),
-        'DataVersion': Int(4671),  # Minecraft 1.21.x
-    }, gzipped=True)
+    place_face(root, 'N', 0, 1)
+    place_face(root, 'W', 1, 0)
+    place_face(root, 'B', 1, 1)
+    place_face(root, 'E', 1, 2)
+    place_face(root, 'S', 2, 1)
+    place_face(root, 'T', 3, 1)
 
-    json_model = json.load(open(f'./input/jumbo_models/{model_name}.json','r',encoding='utf-8'))
-    blocks = get_block_arr(json_model)
+    root.mainloop()
 
-    palette_blocks = []
-    palette = []
-    for i in range(len(blocks)):
-        block_name = blocks[i]
-        if block_name in palette_blocks:
-            index = palette_blocks.index(block_name)
-        else:
-            index = len(palette_blocks)
-            palette_blocks.append(block_name)
-            palette.append(Compound({'Name': String(block_name)}))
+def place_face(root, d: str, row: int, col: int):
+    frame = tk.Frame(root, width=60, height=60)
+    frame.pack_propagate(False)
+    frame.grid(row=row, column=col)
+    button = tk.Button(frame, text=d)
+    button.bind("<Button-1>", lambda e: open_modal(root))
+    button.pack(fill='both', expand=True)
 
-        x,y,z = idx2pos(i)
-        block = Compound({'pos': List[Int]([Int(x), Int(y), Int(z)]), 'state': Int(index)})
-        nbt['blocks'].append(block)
+def open_modal(root):
+    modal = tk.Toplevel(root)
+    modal.title("モーダル")
+    modal.geometry("300x200")
 
-    nbt['palette'] = List[Compound](palette)
-    path = f'./output/{model_name}.nbt'
-    nbt.save(path)
-    print(f'saved: {path}')
+    modal.grab_set()
+    modal.focus_set()
 
-def get_block_arr(model: dict, fill: bool = True):
-    faces = model['faces']
-
-    first_texture = json.load(open(f'./input/jumbo_textures/{faces[0]['texture']}.json', 'r', encoding='utf-8'))
-    fill_block = f'minecraft:{first_texture['components'][0]}' if fill else 'minecraft:structure_void'
-    output = [fill_block] * (16 ** 3)
-
-    falling_blocks = json.load(open(f'./input/falling_block.json','r',encoding='utf-8'))['values']
-
-    for face in faces:
-        json_texture = json.load(open(f'./input/jumbo_textures/{face['texture']}.json','r',encoding='utf-8'))
-
-        p = np.array(face['begin'])
-        d = np.array(face['direction'])
-        slide = np.array(face['shift'])
-
-        for i in range(16**2):
-            block = json_texture['components'][i]
-            index = pos2idx(tuple(p))
-            output[index] = f'minecraft:{block}'
-
-            if f'minecraft:{block}' in falling_blocks:
-                under_pos = p + np.array((0,-1,0))
-                under_index = pos2idx(tuple(under_pos))
-                if output[under_index] == 'minecraft:structure_void':
-                    output[under_index] = 'minecraft:barrier'
-
-            shift = slide if (i + 1) % 16 == 0 else d
-            p += shift
-    return output
-
-def mk_jumbo_model(model_name: str, textures: list[str], priority: list[int]):
-    faces = [{}] * len(textures)
-    for i in range(len(textures)):
-        p = priority[i]
-        faces[p] = {
-            'texture': textures[i],
-            'begin': begin_arr[i],
-            'direction': d_arr[i],
-            'shift': shift_arr[i],
-        }
-
-    output = {'faces': faces}
-    path = f'./output/jumbo_models/{model_name}.json'
-    with open(path, mode='w', encoding='utf-8') as f:
-        json.dump(output, f, ensure_ascii=False, indent=4, sort_keys=True, separators=(',', ': '))
-        print(f'saved: {path}')
-
-def idx2pos(i: int):
-    return i % 16, i // (16**2), (i // 16) % 16
-
-def pos2idx(pos: tuple):
-    return pos[0] + (16**2) * pos[1] + 16 * pos[2]
+    root.wait_window(modal)
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
