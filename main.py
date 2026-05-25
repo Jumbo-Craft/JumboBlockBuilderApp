@@ -38,12 +38,10 @@ def model2nbt(model_name: str, fill: bool = True):
     json_model = json.load(open(f'./input/jumbo_models/{model_name}.json','r',encoding='utf-8'))
     blocks = get_block_arr(json_model)
 
-    falling_blocks = json.load(open(f'./input/jumbo_models/{model_name}.json','r',encoding='utf-8'))['values']
-
     palette_blocks = []
     palette = []
     for i in range(len(blocks)):
-        block_name = f'minecraft:{blocks[i]}'
+        block_name = blocks[i]
         if block_name in palette_blocks:
             index = palette_blocks.index(block_name)
         else:
@@ -60,9 +58,14 @@ def model2nbt(model_name: str, fill: bool = True):
     nbt.save(path)
     print(f'saved: {path}')
 
-def get_block_arr(model: dict):
+def get_block_arr(model: dict, fill: bool = True):
     faces = model['faces']
-    output = ['minecraft:structure_void'] * (16 ** 3)
+
+    first_texture = json.load(open(f'./input/jumbo_textures/{faces[0]['texture']}.json', 'r', encoding='utf-8'))
+    fill_block = f'minecraft:{first_texture['components'][0]}' if fill else 'minecraft:structure_void'
+    output = [fill_block] * (16 ** 3)
+
+    falling_blocks = json.load(open(f'./input/falling_block.json','r',encoding='utf-8'))['values']
 
     for face in faces:
         json_texture = json.load(open(f'./input/jumbo_textures/{face['texture']}.json','r',encoding='utf-8'))
@@ -74,7 +77,14 @@ def get_block_arr(model: dict):
         for i in range(16**2):
             block = json_texture['components'][i]
             index = pos2idx(tuple(p))
-            output[index] = block
+            output[index] = f'minecraft:{block}'
+
+            if f'minecraft:{block}' in falling_blocks:
+                under_pos = p + np.array((0,-1,0))
+                under_index = pos2idx(tuple(under_pos))
+                if output[under_index] == 'minecraft:structure_void':
+                    output[under_index] = 'minecraft:barrier'
+
             shift = slide if (i + 1) % 16 == 0 else d
             p += shift
     return output
@@ -91,7 +101,6 @@ def mk_jumbo_model(model_name: str, textures: list[str], priority: list[int]):
         }
 
     output = {'faces': faces}
-
     path = f'./output/jumbo_models/{model_name}.json'
     with open(path, mode='w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=4, sort_keys=True, separators=(',', ': '))
@@ -100,7 +109,7 @@ def mk_jumbo_model(model_name: str, textures: list[str], priority: list[int]):
 def idx2pos(i: int):
     return i % 16, i // (16**2), (i // 16) % 16
 
-def pos2idx(pos: tuple[int, int, int]):
+def pos2idx(pos: tuple):
     return pos[0] + (16**2) * pos[1] + 16 * pos[2]
 
 # Press the green button in the gutter to run the script.
