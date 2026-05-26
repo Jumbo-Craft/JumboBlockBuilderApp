@@ -1,17 +1,11 @@
 # This is a sample Python script.
-import json
-import os
+import tkinter as tk
 from collections import deque
 from pathlib import Path
 from tkinter import filedialog
 
-import numpy as np
-import tkinter as tk
-
-import nbtlib
-from nbtlib import Compound, List, String, Int
-
 import builder
+
 
 # Press Shift+F10 to execute it or reput it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.

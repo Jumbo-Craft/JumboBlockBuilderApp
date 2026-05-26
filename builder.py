@@ -1,10 +1,8 @@
 import json
-import os
 from pathlib import Path
 
-import numpy as np
-
 import nbtlib
+import numpy as np
 from nbtlib import Compound, List, String, Int
 
 
@@ -25,22 +23,21 @@ def get_block_arr(model: dict):
     output = [inside_block] * (16 ** 3)
 
     falling_blocks = json.load(open(f'./input/falling_block.json', 'r', encoding='utf-8'))['values']
-    begin_arr = {
-        'B':[0, 0, 15], 'E': [15, 15, 15], 'W': [0, 15, 0], 'T': [0, 15, 0], 'N': [15, 15, 0], 'S': [0, 15, 15]
-    }
-    d_arr = {
-        'B': [0, 0, -1], 'E': [0, -1, 0], 'W': [0, -1, 0], 'T': [0, 0, 1], 'N': [0, -1, 0], 'S': [0, -1, 0]
-    }
-    shift_arr = {
-        'B': [1, 0, 15], 'E': [0, 15, -1], 'W': [0, 15, 1], 'T': [1, 0, -15], 'N': [-1, 15, 0], 'S': [1, 15, 0]
+    vec = {
+        'B': {'begin': [0, 0, 15], 'shift': [0, 0, -1], 'slide': [1, 0, 15]},
+        'E': {'begin': [15, 15, 15], 'shift': [0, -1, 0], 'slide': [0, 15, -1]},
+        'W': {'begin': [0, 15, 0], 'shift': [0, -1, 0], 'slide': [0, 15, 1]},
+        'T': {'begin': [0, 15, 0], 'shift' : [0, 0, 1], 'slide': [1, 0, -15]},
+        'N': {'begin': [15, 15, 0], 'shift': [0, -1, 0], 'slide': [-1, 15, 0]},
+        'S': {'begin': [0, 15, 15], 'shift': [0, -1, 0], 'slide': [1, 15, 0]},
     }
 
     for face in faces:
         json_texture = json.load(open(face['texture'], 'r', encoding='utf-8'))
-        direction = face['direction']
-        p = np.array(begin_arr[direction])
-        d = np.array(d_arr[direction])
-        slide = np.array(shift_arr[direction])
+        d = face['direction']
+        p = np.array(vec[d]['begin'])
+        shift = np.array(vec[d]['shift'])
+        slide = np.array(vec[d]['slide'])
 
         for i in range(16 ** 2):
             block = json_texture['components'][i]
@@ -53,8 +50,7 @@ def get_block_arr(model: dict):
                 if output[under_index] == 'minecraft:structure_void':
                     output[under_index] = 'minecraft:barrier'
 
-            shift = slide if (i + 1) % 16 == 0 else d
-            p += shift
+            p += slide if (i + 1) % 16 == 0 else shift
     return output
 
 
@@ -77,7 +73,7 @@ def model2nbt(model_path: str):
     palette = []
     for i in range(len(blocks)):
         block_name = blocks[i]
-        
+
         if block_name == 'minecraft:structure_void':
             continue
 
@@ -100,10 +96,7 @@ def model2nbt(model_path: str):
 
 def mk_jumbo_model(faces: list[dict], path: str, is_empty):
     output = {
-        'faces': [{
-            'texture': f['texture'],
-            'direction': f['direction'],
-        } for f in faces],
+        'faces': faces,
         'is_empty': is_empty
     }
     with open(path, mode='w', encoding='utf-8') as f:

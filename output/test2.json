@@ -2,28 +2,28 @@
     "faces": [
         {
             "direction": "B",
-            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/bamboo_jungle/foliage/acacia_leaves.json"
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/beach/foliage/acacia_leaves.json"
         },
         {
             "direction": "E",
-            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/bamboo_jungle/foliage/acacia_leaves.json"
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/beach/foliage/acacia_leaves.json"
         },
         {
             "direction": "W",
-            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/bamboo_jungle/foliage/acacia_leaves.json"
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/beach/foliage/acacia_leaves.json"
         },
         {
             "direction": "T",
-            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/bamboo_jungle/foliage/acacia_leaves.json"
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/beach/foliage/acacia_leaves.json"
         },
         {
             "direction": "N",
-            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/bamboo_jungle/foliage/acacia_leaves.json"
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/beach/foliage/acacia_leaves.json"
         },
         {
             "direction": "S",
-            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/bamboo_jungle/foliage/acacia_leaves.json"
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/beach/foliage/acacia_leaves.json"
         }
     ],
-    "is_empty": true
+    "is_empty": false
 }
