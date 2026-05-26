@@ -1,14 +1,19 @@
 # This is a sample Python script.
 import json
+import os
+from collections import deque
+from pathlib import Path
+from tkinter import filedialog
+
 import numpy as np
 import tkinter as tk
 
 import nbtlib
 from nbtlib import Compound, List, String, Int
 
-from converter import Converter
+import builder
 
-# Press Shift+F10 to execute it or replace it with your code.
+# Press Shift+F10 to execute it or reput it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 
@@ -16,36 +21,155 @@ def main():
     #mk_jumbo_model('oak_log',
     #               ['oak_log_top', 'oak_log', 'oak_log', 'oak_log_top', 'oak_log', 'oak_log'],
     #               [0, 1, 2, 3, 4, 5])
-    root = tk.Tk()
-    root.title(u"Software Title")
-    root.geometry("800x600")
+    #builder.model2nbt('./output/test2.json')
+    App().show()
+        
+        
+class App:
 
-    place_face(root, 'N', 0, 1)
-    place_face(root, 'W', 1, 0)
-    place_face(root, 'B', 1, 1)
-    place_face(root, 'E', 1, 2)
-    place_face(root, 'S', 2, 1)
-    place_face(root, 'T', 3, 1)
+    faces = []
+    color_que = deque([
+        'red', 'blue', 'green', 'yellow', 'orange', 'purple'
+    ])
 
-    root.mainloop()
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title(u"Software Title")
+        self.root.geometry("800x600")
 
-def place_face(root, d: str, row: int, col: int):
-    frame = tk.Frame(root, width=60, height=60)
-    frame.pack_propagate(False)
-    frame.grid(row=row, column=col)
-    button = tk.Button(frame, text=d)
-    button.bind("<Button-1>", lambda e: open_modal(root))
-    button.pack(fill='both', expand=True)
+    def show(self):
+        self.put_face_panel()
+        check_var = self.put_empty_check()
+        self.put_save_btn(check_var)
 
-def open_modal(root):
-    modal = tk.Toplevel(root)
-    modal.title("モーダル")
-    modal.geometry("300x200")
+        self.root.mainloop()
 
-    modal.grab_set()
-    modal.focus_set()
+    def put_face_panel(self):
+        panel = tk.Frame(self.root, width=60, height=60)
+        panel.pack_propagate(False)
+        panel.grid()
+        self.put_face_btn(panel, 'N', 0, 1)
+        self.put_face_btn(panel, 'W', 1, 0)
+        self.put_face_btn( panel, 'B', 1, 1)
+        self.put_face_btn( panel, 'E', 1, 2)
+        self.put_face_btn( panel, 'S', 2, 1)
+        self.put_face_btn( panel, 'T', 3, 1)
 
-    root.wait_window(modal)
+    def put_face_btn(self, panel, d: str, row: int, col: int):
+        frame = tk.Frame(panel, width=60, height=60)
+        frame.pack_propagate(False)
+        frame.grid(row=row, column=col)
+
+        button = tk.Button(frame, text=d)
+        face = {'button': button, 'texture': '', 'direction': d}
+        button.bind("<Button-1>", lambda e: self.open_modal(face))
+        button.pack(fill='both', expand=True)
+
+
+    def open_modal(self, face):
+        modal = self.__Modal(self, face)
+        modal.show()
+
+    def put_empty_check(self):
+        check_var = tk.BooleanVar()
+        check_button = tk.Checkbutton(self.root, text='empty', variable=check_var)
+        check_button.grid()
+        return check_var
+
+    def put_save_btn(self, check_var):
+        frame = tk.Frame(self.root, width=60, height=60)
+        frame.pack_propagate(False)
+        frame.grid()
+
+        button = tk.Button(frame, text='save')
+        button.bind("<Button-1>", lambda e: self.save(check_var))
+        button.pack(fill='both', expand=True)
+
+
+    def save(self, check_var):
+        nbt_path = filedialog.asksaveasfilename(filetypes=[('NBT File', '*.nbt')])
+        p = Path(nbt_path).relative_to(Path.cwd())
+        file_name = p.stem
+        is_empty = check_var.get()
+        model_path = f'{p.parent}\\{file_name}.json'
+        face_arr = [{'texture': f['paint'][1], 'direction': f['direction']} for f in self.faces]
+        builder.mk_jumbo_model(face_arr, model_path, is_empty)
+        builder.model2nbt(model_path)
+
+
+    class __Modal:
+        def __init__(self, parent: App, face: dict):
+            self.__color_list = [
+                'red', 'blue', 'green', 'yellow', 'orange', 'purple'
+            ]
+            self.__palette = set()
+            for f in parent.faces:
+                paint = f['paint']
+                if paint[0] in self.__color_list:
+                    self.__color_list.remove(paint[0])
+                self.__palette.add(paint)
+
+            self.__root = parent.root
+            self.__faces = parent.faces
+            self.__face = face
+            self.__modal = tk.Toplevel(self.__root)
+            self.__modal.geometry("500x400")
+            self.__modal.grab_set()
+            self.__modal.focus_set()
+
+
+        def show(self):
+            palette_len = len(self.__palette)
+            for i in range(palette_len):
+                paint = self.__palette.pop()
+                self.put_option(paint, i)
+
+            if palette_len < 6:
+                self.put_option(('white', 'select new texture'), 6, True)
+
+
+        def put_option(self, paint: tuple[str, str], row: int, new: bool=False):
+            outer = tk.Frame(self.__modal, width=300)
+            label = tk.Label(outer, text=paint[1], font=('Arial', 12))
+            label.grid(row=row, column=1)
+            outer.grid()
+
+            frame = tk.Frame(outer, width=30, height=30)
+            frame.pack_propagate(False)
+            frame.grid(row=row, column=0)
+            button = tk.Button(frame, bg=paint[0])
+
+            if new:
+                button.bind("<Button-1>", lambda e: self.open_folder())
+            else:
+                button.bind("<Button-1>", lambda e: self.on_selected(paint))
+
+            button.pack(fill='both', expand=True)
+
+
+        def open_folder(self):
+            file_path = filedialog.askopenfilename(filetypes=[('Jumbo Texture File', '*.json')])
+            color = self.__face['paint'][0] if self.__face in self.__faces and len(self.__faces) < 6 \
+                else self.__color_list[0]
+            paint = (color, file_path)
+            self.on_selected(paint)
+
+
+        def on_selected(self, paint: tuple[str, str]):
+            self.__face['paint'] = paint
+
+            if self.__face in self.__faces:
+                self.__faces.remove(self.__face)
+
+            self.__faces.append(self.__face)
+
+            self.__modal.grab_release()
+            button = self.__face['button']
+            button.config(bg=paint[0])
+            #button.config(text=f'{self.__face['direction']}({len(self.__faces)})')
+            button.update()
+            self.__modal.destroy()
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
