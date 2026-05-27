@@ -37,15 +37,21 @@ def get_block_arr(model: dict):
         slide = np.array(vec[d]['slide'])
 
         for i in range(16 ** 2):
-            block = json_texture['components'][i]
+            block = f'minecraft:{json_texture['components'][i]}'
             index = pos2idx(tuple(p))
-            output[index] = f'minecraft:{block}'
+            output[index] = block
 
-            if f'minecraft:{block}' in falling_blocks:
+            if block in falling_blocks:
                 under_pos = p + np.array((0, -1, 0))
                 under_index = pos2idx(tuple(under_pos))
                 if output[under_index] == 'minecraft:structure_void':
                     output[under_index] = 'minecraft:barrier'
+
+            if block == 'minecraft:structure_void':
+                over_pos = p + np.array((0, 1, 0))
+                over_index = pos2idx(tuple(over_pos))
+                if 0 <= over_index < len(output) and output[over_index] in falling_blocks:
+                    output[index] = 'minecraft:barrier'
 
             p += slide if (i + 1) % 16 == 0 else shift
     return output

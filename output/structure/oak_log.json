@@ -1,0 +1,28 @@
+{
+    "faces": [
+        {
+            "direction": "B",
+            "texture": 0
+        },
+        {
+            "direction": "E",
+            "texture": 1
+        },
+        {
+            "direction": "W",
+            "texture": 1
+        },
+        {
+            "direction": "T",
+            "texture": 0
+        },
+        {
+            "direction": "N",
+            "texture": 1
+        },
+        {
+            "direction": "S",
+            "texture": 1
+        }
+    ]
+}
