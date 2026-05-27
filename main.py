@@ -1,4 +1,6 @@
 # This is a sample Python script.
+import json
+import os
 import tkinter as tk
 from collections import deque
 from pathlib import Path
@@ -20,16 +22,11 @@ def main():
         
         
 class App:
-
-    faces = []
-    color_que = deque([
-        'red', 'blue', 'green', 'yellow', 'orange', 'purple'
-    ])
-
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title(u"Software Title")
-        self.root.geometry("800x600")
+        self.root.title(u'Software Title')
+        self.root.geometry('800x600')
+        self.faces = []
 
     def show(self):
         self.put_face_panel()
@@ -39,8 +36,7 @@ class App:
         self.root.mainloop()
 
     def put_face_panel(self):
-        panel = tk.Frame(self.root, width=60, height=60)
-        panel.pack_propagate(False)
+        panel = tk.Frame(self.root)
         panel.grid()
         self.put_face_btn(panel, 'N', 0, 1)
         self.put_face_btn(panel, 'W', 1, 0)
@@ -55,8 +51,9 @@ class App:
         frame.grid(row=row, column=col)
 
         button = tk.Button(frame, text=d)
-        face = {'button': button, 'texture': '', 'direction': d}
-        button.bind("<Button-1>", lambda e: self.open_modal(face))
+        face = {'button': button, 'direction': d}
+        self.faces.append(face)
+        button.bind('<Button-1>', lambda e: self.open_modal(face))
         button.pack(fill='both', expand=True)
 
 
@@ -75,10 +72,9 @@ class App:
         frame.pack_propagate(False)
         frame.grid()
 
-        button = tk.Button(frame, text='save')
-        button.bind("<Button-1>", lambda e: self.save(check_var))
-        button.pack(fill='both', expand=True)
-
+        btn = tk.Button(frame, text='save')
+        btn.bind('<Button-1>', lambda e: self.save(check_var))
+        btn.pack(fill='both', expand=True)
 
     def save(self, check_var):
         nbt_path = filedialog.asksaveasfilename(filetypes=[('NBT File', '*.nbt')])
@@ -90,40 +86,51 @@ class App:
         builder.mk_jumbo_model(face_arr, model_path, is_empty)
         builder.model2nbt(model_path)
 
+        self.root.destroy()
+        App().show()
+
 
     class __Modal:
         def __init__(self, parent: App, face: dict):
-            self.__color_list = [
-                'red', 'blue', 'green', 'yellow', 'orange', 'purple'
-            ]
-            self.__palette = set()
-            for f in parent.faces:
-                paint = f['paint']
-                if paint[0] in self.__color_list:
-                    self.__color_list.remove(paint[0])
-                self.__palette.add(paint)
-
-            self.__root = parent.root
             self.__faces = parent.faces
             self.__face = face
+            self.__color_set = {
+                'red', 'blue', 'green', 'yellow', 'orange', 'purple'
+            }
+            self.__palette = []
+
+            for f in parent.faces:
+                if 'paint' not in f.keys():
+                    continue
+                paint = f['paint']
+                self.__color_set.discard(paint[0])
+                if paint not in self.__palette:
+                    self.__palette.append(paint)
+
+            self.__root = parent.root
             self.__modal = tk.Toplevel(self.__root)
-            self.__modal.geometry("500x400")
+            self.__modal.geometry('800x600')
             self.__modal.grab_set()
             self.__modal.focus_set()
 
 
         def show(self):
-            palette_len = len(self.__palette)
-            for i in range(palette_len):
-                paint = self.__palette.pop()
-                self.put_option(paint, i)
-
-            if palette_len < 6:
-                self.put_option(('white', 'select new texture'), 6, True)
+            self.put_option_panel()
+            self.put_template_panel()
 
 
-        def put_option(self, paint: tuple[str, str], row: int, new: bool=False):
-            outer = tk.Frame(self.__modal, width=300)
+        def put_option_panel(self):
+            panel = tk.Frame(self.__modal)
+            panel.grid()
+            for i in range(len(self.__palette)):
+                paint = self.__palette[i]
+                self.put_option(panel, paint, i)
+
+            if len(self.__palette) < 6:
+                self.put_option(panel, ('white', 'select new texture'), 6, True)
+
+        def put_option(self, panel, paint: tuple[str, str], row: int, new: bool=False):
+            outer = tk.Frame(panel, width=800)
             label = tk.Label(outer, text=paint[1], font=('Arial', 12))
             label.grid(row=row, column=1)
             outer.grid()
@@ -134,17 +141,16 @@ class App:
             button = tk.Button(frame, bg=paint[0])
 
             if new:
-                button.bind("<Button-1>", lambda e: self.open_folder())
+                button.bind('<Button-1>', lambda e: self.open_folder())
             else:
-                button.bind("<Button-1>", lambda e: self.on_selected(paint))
+                button.bind('<Button-1>', lambda e: self.on_selected(paint))
 
             button.pack(fill='both', expand=True)
 
 
         def open_folder(self):
             file_path = filedialog.askopenfilename(filetypes=[('Jumbo Texture File', '*.json')])
-            color = self.__face['paint'][0] if self.__face in self.__faces and len(self.__faces) < 6 \
-                else self.__color_list[0]
+            color = self.__color_set.pop()
             paint = (color, file_path)
             self.on_selected(paint)
 
@@ -158,10 +164,46 @@ class App:
             self.__faces.append(self.__face)
 
             self.__modal.grab_release()
-            button = self.__face['button']
-            button.config(bg=paint[0])
+            btn = self.__face['button']
+            btn.config(bg=paint[0])
             #button.config(text=f'{self.__face['direction']}({len(self.__faces)})')
-            button.update()
+            btn.update()
+            self.__modal.destroy()
+
+        def put_template_panel(self):
+            panel = tk.Frame(self.__modal)
+            panel.grid()
+            tmp_dir = './input/model_templates'
+            files = os.listdir(tmp_dir)
+            for i in range(len(files)):
+                file_name = files[i]
+                template = json.load(open(f'{tmp_dir}/{file_name}', 'r', encoding='utf-8'))
+                max_paint = max([f['texture'] for f in template['faces']])
+                if len(self.__palette)>= max_paint + 1:
+                    self.put_template_btn(panel, file_name, template, i)
+
+        def put_template_btn(self, panel, file_name: str, template, row: int):
+            frame = tk.Frame(panel, width=800, height=30)
+            frame.pack_propagate(False)
+            frame.grid(row=row)
+
+            button = tk.Button(frame, text=file_name)
+            button.bind('<Button-1>', lambda e: self.apply_template(template))
+            button.pack(fill='both', expand=True)
+
+        def apply_template(self, template):
+            faces = template['faces']
+            for i in range(len(faces)):
+                f = faces[i]
+                tx_i = f['texture']
+                paint = self.__palette[tx_i]
+                self.__faces[i]['paint'] = paint
+                self.__faces[i]['direction'] = f['direction']
+
+                btn = self.__faces[i]['button']
+                btn.config(bg=paint[0])
+                btn.update()
+
             self.__modal.destroy()
 
 
