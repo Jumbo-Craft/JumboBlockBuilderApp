@@ -16,12 +16,9 @@ def pos2idx(pos: tuple):
 
 def get_block_arr(model: dict):
     faces = model['faces']
-    is_empty = model['is_empty']
+    inside = model['inside']
 
-    first_texture = json.load(open(faces[0]['texture'], 'r', encoding='utf-8'))
-    inside_block = 'minecraft:structure_void' if is_empty else f'minecraft:{first_texture['components'][0]}'
-    output = [inside_block] * (16 ** 3)
-
+    output = [inside] * (16 ** 3)
     falling_blocks = json.load(open(f'./input/falling_block.json', 'r', encoding='utf-8'))['values']
     vec = {
         'B': {'begin': [0, 0, 15], 'shift': [0, 0, -1], 'slide': [1, 0, 15]},
@@ -94,10 +91,10 @@ def model2nbt(model_path: str):
     print(f'saved: {path}')
 
 
-def mk_jumbo_model(faces: list[dict], path: str, is_empty):
+def mk_jumbo_model(faces: list[dict], path: str, inside: str):
     output = {
         'faces': faces,
-        'is_empty': is_empty
+        'inside': inside,
     }
     with open(path, mode='w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=4, sort_keys=True, separators=(',', ': '))

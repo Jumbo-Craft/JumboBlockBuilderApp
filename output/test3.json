@@ -25,5 +25,5 @@
             "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/basalt_deltas/foliage/acacia_leaves.json"
         }
     ],
-    "is_empty": false
+    "inside": "minecraft:structure_void"
 }
