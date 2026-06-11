@@ -14,20 +14,27 @@ def pos2idx(pos: tuple):
     return pos[0] + (16 ** 2) * pos[1] + 16 * pos[2]
 
 
-def get_block_arr(model: dict):
-    faces = model['faces']
-    inside = model['inside']
+falling_blocks = json.load(open(f'./input/falling_block.json', 'r', encoding='utf-8'))['values']
 
+cube_vec = {
+    'B': {'begin': [0, 0, 15], 'shift': [0, 0, -1], 'slide': [1, 0, 15]},
+    'E': {'begin': [15, 15, 15], 'shift': [0, -1, 0], 'slide': [0, 15, -1]},
+    'W': {'begin': [0, 15, 0], 'shift': [0, -1, 0], 'slide': [0, 15, 1]},
+    'T': {'begin': [0, 15, 0], 'shift' : [0, 0, 1], 'slide': [1, 0, -15]},
+    'N': {'begin': [15, 15, 0], 'shift': [0, -1, 0], 'slide': [-1, 15, 0]},
+    'S': {'begin': [0, 15, 15], 'shift': [0, -1, 0], 'slide': [1, 15, 0]}
+}
+
+cross_vec = {
+    'cross1': {'begin': [0, 15, 0], 'shift': [0, -1, 0], 'slide': [1, 15, 1]},
+    'cross2': {'begin': [15, 15, 0], 'shift': [0, -1, 0], 'slide': [-1, 15, 1]}
+}
+
+
+def get_block_arr(model: dict, vec: dict):
+    inside = model['inside']
     output = [inside] * (16 ** 3)
-    falling_blocks = json.load(open(f'./input/falling_block.json', 'r', encoding='utf-8'))['values']
-    vec = {
-        'B': {'begin': [0, 0, 15], 'shift': [0, 0, -1], 'slide': [1, 0, 15]},
-        'E': {'begin': [15, 15, 15], 'shift': [0, -1, 0], 'slide': [0, 15, -1]},
-        'W': {'begin': [0, 15, 0], 'shift': [0, -1, 0], 'slide': [0, 15, 1]},
-        'T': {'begin': [0, 15, 0], 'shift' : [0, 0, 1], 'slide': [1, 0, -15]},
-        'N': {'begin': [15, 15, 0], 'shift': [0, -1, 0], 'slide': [-1, 15, 0]},
-        'S': {'begin': [0, 15, 15], 'shift': [0, -1, 0], 'slide': [1, 15, 0]},
-    }
+    faces = model['faces']
 
     for face in faces:
         json_texture = json.load(open(face['texture'], 'r', encoding='utf-8'))
@@ -54,8 +61,8 @@ def get_block_arr(model: dict):
                     output[index] = 'minecraft:barrier'
 
             p += slide if (i + 1) % 16 == 0 else shift
-    return output
 
+    return output
 
 def model2nbt(model_path: str):
     p = Path(model_path)
@@ -70,7 +77,12 @@ def model2nbt(model_path: str):
     }, gzipped=True)
 
     json_model = json.load(open(model_path, 'r', encoding='utf-8'))
-    blocks = get_block_arr(json_model)
+    model_type = json_model['model_type']
+
+    if model_type == 'cube':
+        blocks = get_block_arr(json_model, cube_vec)
+    else:
+        blocks = get_block_arr(json_model, cross_vec)
 
     palette_blocks = []
     palette = []
@@ -97,10 +109,11 @@ def model2nbt(model_path: str):
     print(f'saved: {path}')
 
 
-def mk_jumbo_model(faces: list[dict], path: str, inside: str):
+def mk_jumbo_model(model_type: str, faces: list[dict], path: str, inside: str):
     output = {
+        'model_type': model_type,
         'faces': faces,
-        'inside': inside,
+        'inside': inside
     }
     with open(path, mode='w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=4, sort_keys=True, separators=(',', ': '))

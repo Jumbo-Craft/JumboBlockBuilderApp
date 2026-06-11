@@ -60,7 +60,7 @@ class App:
         inside = 'minecraft:structure_void' if inside == '' else f'minecraft:{inside}'
         model_path = f'{p.parent}\\{file_name}.json'
         face_arr = [{'texture': f['paint'][1], 'direction': f['direction']} for f in self.faces]
-        builder.mk_jumbo_model(face_arr, model_path, inside)
+        builder.mk_jumbo_model('cube', face_arr, model_path, inside)
         builder.model2nbt(model_path)
 
         self.root.destroy()

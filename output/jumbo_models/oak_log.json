@@ -1,112 +1,28 @@
 {
     "faces": [
         {
-            "begin": [
-                0,
-                0,
-                15
-            ],
-            "direction": [
-                0,
-                0,
-                -1
-            ],
-            "shift": [
-                1,
-                0,
-                15
-            ],
-            "texture": "oak_log_top"
+            "direction": "B",
+            "texture": 0
         },
         {
-            "begin": [
-                15,
-                15,
-                15
-            ],
-            "direction": [
-                0,
-                -1,
-                0
-            ],
-            "shift": [
-                0,
-                15,
-                -1
-            ],
-            "texture": "oak_log"
+            "direction": "E",
+            "texture": 1
         },
         {
-            "begin": [
-                0,
-                15,
-                0
-            ],
-            "direction": [
-                0,
-                -1,
-                0
-            ],
-            "shift": [
-                0,
-                15,
-                1
-            ],
-            "texture": "oak_log"
+            "direction": "W",
+            "texture": 1
         },
         {
-            "begin": [
-                0,
-                15,
-                0
-            ],
-            "direction": [
-                0,
-                0,
-                1
-            ],
-            "shift": [
-                1,
-                0,
-                -15
-            ],
-            "texture": "oak_log_top"
+            "direction": "T",
+            "texture": 0
         },
         {
-            "begin": [
-                15,
-                15,
-                0
-            ],
-            "direction": [
-                0,
-                -1,
-                0
-            ],
-            "shift": [
-                -1,
-                15,
-                0
-            ],
-            "texture": "oak_log"
+            "direction": "N",
+            "texture": 1
         },
         {
-            "begin": [
-                0,
-                15,
-                15
-            ],
-            "direction": [
-                0,
-                -1,
-                0
-            ],
-            "shift": [
-                1,
-                15,
-                0
-            ],
-            "texture": "oak_log"
+            "direction": "S",
+            "texture": 1
         }
     ]
 }

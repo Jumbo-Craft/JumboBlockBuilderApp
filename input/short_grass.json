@@ -1,0 +1,14 @@
+{
+  "model_type": "cross",
+  "faces": [
+      {
+          "direction": "cross1",
+          "texture": "C:\\Users\\hojit\\workspace\\JumboBlockBuilderApp\\input\\jumbo_textures\\plains\\grass\\short_grass.json"
+      },
+      {
+          "direction": "cross2",
+          "texture": "C:\\Users\\hojit\\workspace\\JumboBlockBuilderApp\\input\\jumbo_textures\\plains\\grass\\short_grass.json"
+      }
+  ],
+  "inside": "minecraft:structure_void"
+}
