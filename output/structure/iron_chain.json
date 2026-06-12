@@ -1,0 +1,14 @@
+{
+    "faces": [
+        {
+            "direction": "cross1",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/iron_chain.json"
+        },
+        {
+            "direction": "cross2",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/iron_chain.json"
+        }
+    ],
+    "inside": "minecraft:structure_void",
+    "model_type": "cross"
+}

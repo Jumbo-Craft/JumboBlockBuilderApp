@@ -57,10 +57,17 @@ class App:
         p = Path(nbt_path).relative_to(Path.cwd())
         file_name = p.stem
         inside = block_entry.get()
-        inside = 'minecraft:structure_void' if inside == '' else f'minecraft:{inside}'
         model_path = f'{p.parent}\\{file_name}.json'
-        face_arr = [{'texture': f['paint'][1], 'direction': f['direction']} for f in self.faces]
-        builder.mk_jumbo_model('cube', face_arr, model_path, inside)
+
+        if inside == 'CROSS':
+            print(self.faces)
+            face_arr = [{'texture': self.faces[0]['paint'][1], 'direction': 'cross1'}, {'texture': self.faces[0]['paint'][1], 'direction': 'cross2'}]
+            builder.mk_jumbo_model('cross', face_arr, model_path, 'minecraft:structure_void')
+        else:
+            inside = 'minecraft:structure_void' if inside == '' else f'minecraft:{inside}'
+            face_arr = [{'texture': f['paint'][1], 'direction': f['direction']} for f in self.faces]
+            builder.mk_jumbo_model('cube', face_arr, model_path, inside)
+
         builder.model2nbt(model_path)
 
         self.root.destroy()
