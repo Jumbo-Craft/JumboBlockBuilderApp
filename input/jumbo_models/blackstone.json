@@ -1,0 +1,29 @@
+{
+    "faces": [
+        {
+            "direction": "B",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/blackstone_top.json"
+        },
+        {
+            "direction": "E",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/blackstone.json"
+        },
+        {
+            "direction": "W",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/blackstone.json"
+        },
+        {
+            "direction": "T",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/blackstone_top.json"
+        },
+        {
+            "direction": "N",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/blackstone.json"
+        },
+        {
+            "direction": "S",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/blackstone.json"
+        }
+    ],
+    "inside": "minecraft:blackstone"
+}

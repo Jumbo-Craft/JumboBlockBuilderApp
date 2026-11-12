@@ -1,112 +1,30 @@
 {
     "faces": [
         {
-            "begin": [
-                0,
-                0,
-                15
-            ],
-            "direction": [
-                0,
-                0,
-                -1
-            ],
-            "shift": [
-                1,
-                0,
-                15
-            ],
-            "texture": "oak_log_top"
+            "direction": "B",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_log.json"
         },
         {
-            "begin": [
-                15,
-                15,
-                15
-            ],
-            "direction": [
-                0,
-                -1,
-                0
-            ],
-            "shift": [
-                0,
-                15,
-                -1
-            ],
-            "texture": "oak_log"
+            "direction": "E",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_log.json"
         },
         {
-            "begin": [
-                0,
-                15,
-                0
-            ],
-            "direction": [
-                0,
-                -1,
-                0
-            ],
-            "shift": [
-                0,
-                15,
-                1
-            ],
-            "texture": "oak_log"
+            "direction": "W",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_log.json"
         },
         {
-            "begin": [
-                0,
-                15,
-                0
-            ],
-            "direction": [
-                0,
-                0,
-                1
-            ],
-            "shift": [
-                1,
-                0,
-                -15
-            ],
-            "texture": "oak_log_top"
+            "direction": "T",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_log_top.json"
         },
         {
-            "begin": [
-                15,
-                15,
-                0
-            ],
-            "direction": [
-                0,
-                -1,
-                0
-            ],
-            "shift": [
-                -1,
-                15,
-                0
-            ],
-            "texture": "oak_log"
+            "direction": "N",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_log.json"
         },
         {
-            "begin": [
-                0,
-                15,
-                15
-            ],
-            "direction": [
-                0,
-                -1,
-                0
-            ],
-            "shift": [
-                1,
-                15,
-                0
-            ],
-            "texture": "oak_log"
+            "direction": "S",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_log.json"
         }
-    ]
+    ],
+    "inside": "minecraft:oak_log",
+    "model_type": "cube"
 }

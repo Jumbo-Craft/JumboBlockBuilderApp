@@ -1,0 +1,29 @@
+{
+    "faces": [
+        {
+            "direction": "B",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/blue_wool.json"
+        },
+        {
+            "direction": "E",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/blue_wool.json"
+        },
+        {
+            "direction": "W",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/blue_wool.json"
+        },
+        {
+            "direction": "T",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/blue_wool.json"
+        },
+        {
+            "direction": "N",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/blue_wool.json"
+        },
+        {
+            "direction": "S",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/blue_wool.json"
+        }
+    ],
+    "inside": "minecraft:blue_wool"
+}

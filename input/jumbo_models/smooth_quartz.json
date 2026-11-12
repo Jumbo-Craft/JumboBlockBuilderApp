@@ -1,0 +1,29 @@
+{
+    "faces": [
+        {
+            "direction": "B",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/quartz_block_bottom.json"
+        },
+        {
+            "direction": "E",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/quartz_block_bottom.json"
+        },
+        {
+            "direction": "W",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/quartz_block_bottom.json"
+        },
+        {
+            "direction": "T",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/quartz_block_bottom.json"
+        },
+        {
+            "direction": "N",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/quartz_block_bottom.json"
+        },
+        {
+            "direction": "S",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/quartz_block_bottom.json"
+        }
+    ],
+    "inside": "minecraft:smooth_quartz"
+}

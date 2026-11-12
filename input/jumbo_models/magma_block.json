@@ -1,0 +1,29 @@
+{
+    "faces": [
+        {
+            "direction": "B",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/magma.json"
+        },
+        {
+            "direction": "E",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/magma.json"
+        },
+        {
+            "direction": "W",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/magma.json"
+        },
+        {
+            "direction": "T",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/magma.json"
+        },
+        {
+            "direction": "N",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/magma.json"
+        },
+        {
+            "direction": "S",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/magma.json"
+        }
+    ],
+    "inside": "minecraft:magma_block"
+}

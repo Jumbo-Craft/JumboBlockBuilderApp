@@ -1,0 +1,29 @@
+{
+    "faces": [
+        {
+            "direction": "B",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/gray_terracotta.json"
+        },
+        {
+            "direction": "E",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/gray_terracotta.json"
+        },
+        {
+            "direction": "W",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/gray_terracotta.json"
+        },
+        {
+            "direction": "T",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/gray_terracotta.json"
+        },
+        {
+            "direction": "N",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/gray_terracotta.json"
+        },
+        {
+            "direction": "S",
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/gray_terracotta.json"
+        }
+    ],
+    "inside": "minecraft:gray_terracotta"
+}

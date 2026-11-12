@@ -2,27 +2,29 @@
     "faces": [
         {
             "direction": "B",
-            "texture": 0
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_log.json"
         },
         {
             "direction": "E",
-            "texture": 1
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_log_top.json"
         },
         {
             "direction": "W",
-            "texture": 1
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_log_top.json"
         },
         {
             "direction": "T",
-            "texture": 0
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_log.json"
         },
         {
             "direction": "N",
-            "texture": 1
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_log_top.json"
         },
         {
             "direction": "S",
-            "texture": 1
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_log_top.json"
         }
-    ]
+    ],
+    "inside": "minecraft:oak_log",
+    "model_type": "cube"
 }

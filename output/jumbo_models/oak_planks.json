@@ -2,27 +2,29 @@
     "faces": [
         {
             "direction": "B",
-            "texture": 0
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_planks.json"
         },
         {
             "direction": "E",
-            "texture": 0
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_planks.json"
         },
         {
             "direction": "W",
-            "texture": 0
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_planks.json"
         },
         {
             "direction": "N",
-            "texture": 0
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_planks.json"
         },
         {
             "direction": "S",
-            "texture": 0
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_planks.json"
         },
         {
             "direction": "T",
-            "texture": 0
+            "texture": "C:/Users/hojit/workspace/JumboBlockBuilderApp/input/jumbo_textures/oak_planks.json"
         }
-    ]
+    ],
+    "inside": "minecraft:oak_planks",
+    "model_type": "cube"
 }
